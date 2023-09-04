@@ -2,9 +2,11 @@ import { Button } from 'react-bootstrap';
 import { useRef } from 'react';
 import classes from './Login.module.css';
 import {Link} from 'react-router-dom';
-import {useHistory} from 'react-router-dom'
+import {useHistory} from 'react-router-dom';
+import { authActions } from '../../store/authSlice';
+import { useDispatch } from 'react-redux';
 const Login=()=>{ 
-
+    const dispatch= useDispatch();
     const history= useHistory();
     const emailInputRef= useRef('');
     const passwordInputRef= useRef('');
@@ -36,6 +38,7 @@ const Login=()=>{
                     })
                 }
             }).then((data) => {
+                dispatch(authActions.login(data))
                 console.log(data.idToken, enteredEmail);
                 history.replace('/home');
             }).catch((err) => {

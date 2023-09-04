@@ -1,0 +1,18 @@
+
+.control input{
+   width: 100%
+   
+}
+.control label{
+    font-weight: bold;
+}
+ .control{
+    margin-right: 60px;
+ }
+
+ .actions Button{
+    margin: 1rem;
+    background-color: transparent;
+    border: 1px solid blue;
+    color: black;
+ }

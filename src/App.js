@@ -1,23 +1,47 @@
 import SignUp from './components/SignUp/SignUp';
-import './App.css';
 import {Switch, Route} from 'react-router-dom';
 import Login from './components/Login/Login'
-import Home from './components/Home/Home';
+import { sendMail, receivedMail } from './store/mail-actions'
+import { useSelector,useDispatch } from 'react-redux';
+import { Fragment, useEffect } from 'react';
+import MainLayout from './components/Layout/MainLayout';
+import MailEditor from './components/Mail/MailEditor';
+let isInitial = true;
+function App(){
 
-function App() {
+  const dispatch = useDispatch();
+  const mails = useSelector(state => state.mail)
+  const isLogin = useSelector(state => state.auth.isLoggedIn);
+
+  useEffect(() => {
+    dispatch(receivedMail())
+  },[dispatch]);
+
+  useEffect(() => {
+    if(isInitial) {
+      isInitial = false;
+      return;
+    }
+    dispatch(sendMail(mails))
+
+  },[mails,dispatch])
   return (
     <>
-    <Switch>
+    <Fragment>
+   <Switch>
     <Route path='/' exact>
-    <SignUp/>
+      <SignUp/>
     </Route>
     <Route path='/login'>
-    <Login/>
+      <Login />
     </Route>
-    <Route path='/home'>
-    <Home/>
-    </Route>
-    </Switch>
+    {isLogin && <MainLayout> 
+  <Route path='/edit'>
+    <MailEditor/>
+  </Route>
+  </MainLayout> }
+   </Switch>
+   </Fragment>
     </>
   )
 }
