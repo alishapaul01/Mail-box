@@ -1,25 +1,21 @@
 import { Button } from 'react-bootstrap';
 import { useRef } from 'react';
-import classes from './SignUp.module.css';
-import { Link } from 'react-router-dom';
-const SignUp=()=>{
+import classes from './Login.module.css';
+import {Link} from 'react-router-dom';
+import {useHistory} from 'react-router-dom'
+const Login=()=>{ 
+
+    const history= useHistory();
     const emailInputRef= useRef('');
     const passwordInputRef= useRef('');
-    const confirmPasswordInputRef = useRef();
 
     const submitHandler =async (event)=>{
         event.preventDefault();
         const enteredEmail = emailInputRef.current.value;
         const enteredPassword = passwordInputRef.current.value;
-        const enteredConfirmPassword = confirmPasswordInputRef.current.value;
         
-    if(enteredPassword !== enteredConfirmPassword){
-        alert('Password does not match')
-        confirmPasswordInputRef.current.value = '';
-    } 
-    else{
       
-            let url='https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDoJN_rVr0Lc1JqJC3gN9mIP1BscIC_kVU'
+            let url='https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDoJN_rVr0Lc1JqJC3gN9mIP1BscIC_kVU'
             await fetch(url, {
                 method: 'POST',
                 body: JSON.stringify({
@@ -39,16 +35,19 @@ const SignUp=()=>{
                         throw new Error(errorMessage)
                     })
                 }
+            }).then((data) => {
+                console.log(data.idToken, enteredEmail);
+                history.replace('/home');
             }).catch((err) => {
                 alert(err.message);
             })
-        }
+        
     }
     
     return (
         <>
-        <section className={classes.signup}>
-            <h2> Sign Up</h2>
+        <section className={classes.login}>
+            <h2> Login </h2>
             <form onSubmit={submitHandler}>
         <div className={classes.control}>
           <label htmlFor='email'>Email</label>
@@ -68,27 +67,19 @@ const SignUp=()=>{
             required
           />
         </div>
-        <div className={classes.control}>
-              <label htmlFor='Cpassword'>Confirm Password</label>
-              <input
-                type='password'
-                id='Cpassword'
-                ref={confirmPasswordInputRef}
-                required
-              />
-        </div>
         <div className={classes.actions}>
-        <Button variant="primary" type='submit'>Sign Up</Button>
+        <Button variant="primary" type='submit'>Login</Button>
         </div>
         </form>
         </section>
-        <div className={classes.login}>
-        <p>Have an account? 
-            <Link to='/login'>Login</Link>
+        <div className={classes.signup}>
+        <p>Don't Have an account? 
+            <Link to='/'>Sign Up</Link>
         </p>
         </div>
         </>
     )
 }
 
-export default SignUp;
+
+export default Login;
