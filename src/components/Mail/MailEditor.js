@@ -56,7 +56,7 @@ const MailEditor = (props) => {
          </div>
          <div className={classes.actions}>
           <Button type="submit">Send</Button>
-          <Button>Cancel</Button>
+          <Button onClick={props.onClose}>Cancel</Button>
           </div>
         </form>
         </>

@@ -2,12 +2,14 @@ import { Container, Row, Col, Button, Nav} from 'react-bootstrap';
 import classes from './MailOptions.module.css';
 import MailEditor from './MailEditor';
 import { useState } from 'react';
-
-
+import Inbox from './Inbox';
 const MailOptions = () => {
     const [isClicked, setIsClicked] = useState(false)
     const handleClick = () => {
         setIsClicked(true);
+    }
+    const closeHandleClick = () => {
+        setIsClicked(false);
     }
     return (
         <Container className={classes.mailOptions}>
@@ -18,15 +20,15 @@ const MailOptions = () => {
             activeKey="/home"
             >
             <Nav.Item>
-                <Nav.Link>Inbox</Nav.Link>
+                <Nav.Link> Inbox </Nav.Link>
             </Nav.Item>
             <Nav.Item>
                 <Nav.Link eventKey="link-1">Sent</Nav.Link>
             </Nav.Item>
             </Nav>
     </Col>  
-    {/* {!isClicked && <Col md={10}>Inbox</Col>  } */}
-    {isClicked && <Col md={8}><MailEditor /></Col>  }
+    {!isClicked && <Col md={10}><Inbox/></Col>  }
+    {isClicked && <Col md={8}><MailEditor onClose={closeHandleClick} /></Col>  }
 
   </Row> 
   </Container>

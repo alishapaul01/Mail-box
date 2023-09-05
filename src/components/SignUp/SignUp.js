@@ -2,7 +2,12 @@ import { Button } from 'react-bootstrap';
 import { useRef } from 'react';
 import classes from './SignUp.module.css';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import {authActions} from '../../store/authSlice';
+import {useHistory} from 'react-router-dom';
 const SignUp=()=>{
+    const dispatch= useDispatch();
+    const history= useHistory()
     const emailInputRef= useRef('');
     const passwordInputRef= useRef('');
     const confirmPasswordInputRef = useRef();
@@ -39,6 +44,10 @@ const SignUp=()=>{
                         throw new Error(errorMessage)
                     })
                 }
+            }).then((data) => {
+                dispatch(authActions.login(data))
+                console.log(data.idToken, enteredEmail);
+                history.replace('/home');
             }).catch((err) => {
                 alert(err.message);
             })

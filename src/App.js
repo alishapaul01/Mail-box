@@ -6,25 +6,31 @@ import { useSelector,useDispatch } from 'react-redux';
 import { Fragment, useEffect } from 'react';
 import MainLayout from './components/Layout/MainLayout';
 import MailEditor from './components/Mail/MailEditor';
-let isInitial = true;
-function App(){
+import { sendToReceiver, fetchReceivedMails } from './store/mail-recieved-actions';
 
+let isInitial = true;
+function App() {
   const dispatch = useDispatch();
   const mails = useSelector(state => state.mail)
-  const isLogin = useSelector(state => state.auth.isLoggedIn);
-
+  const isLogin = useSelector(state => state.auth.isLoggedIn)
+  const receiveMail = useSelector(state => state.mailReceive)
+  console.log(receiveMail)
   useEffect(() => {
+    if(isLogin) {
     dispatch(receivedMail())
-  },[dispatch]);
-
+    dispatch(fetchReceivedMails())
+    }
+  },[dispatch, isLogin ])
   useEffect(() => {
     if(isInitial) {
       isInitial = false;
       return;
     }
+    if(isLogin) {
     dispatch(sendMail(mails))
-
-  },[mails,dispatch])
+    dispatch(sendToReceiver(mails))
+    }
+  },[mails,receiveMail,dispatch, isLogin])
   return (
     <>
     <Fragment>
@@ -36,10 +42,10 @@ function App(){
       <Login />
     </Route>
     {isLogin && <MainLayout> 
-  <Route path='/edit'>
-    <MailEditor/>
-  </Route>
-  </MainLayout> }
+      <Route path='/edit'>
+        <MailEditor/>
+        </Route>
+        </MainLayout> }
    </Switch>
    </Fragment>
     </>

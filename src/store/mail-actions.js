@@ -6,7 +6,7 @@ const emailId = email.split('@')[0];
 export const receivedMail = () => {
     return async(dispatch) => {
         const fetchData = async() => {
-            const response = await fetch(`https://mail-box-3d7e2-default-rtdb.firebaseio.com/mail${emailId}.json`);
+            const response = await fetch(`https://mail-box-3d7e2-default-rtdb.firebaseio.com/mailSent${emailId}.json`);
             if(!response.ok) {
                 throw new Error('Could not fetch data')
             };
@@ -29,7 +29,7 @@ export const sendMail = (mailInput) => {
 
     return async() => {
 
-            const response = await fetch(`https://mail-box-3d7e2-default-rtdb.firebaseio.com/mail${emailId}.json`,{
+            const response = await fetch(`https://mail-box-3d7e2-default-rtdb.firebaseio.com/mailSent${emailId}.json`,{
                 method: 'PUT',
                 body:JSON.stringify({
                     mail:mailInput.mail
